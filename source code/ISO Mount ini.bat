@@ -162,8 +162,16 @@ REM If the user has givin the location of
 REM		Display Changer then this label will
 REM 	be excecuted.
 :ChangeRefresh
+	if not [%driveNum%]==[] (
+		echo. Mounting ISO: %isoLocation% to drive: %driveNum%
+			start /wait /i "Mount ISO" %vcdmountLocation% /d=%driveNum% %isoLocation%
+	)
+	
+	if [%driveNum%]==[] (
 	echo. Mounting ISO: %isoLocation% to drive: %driveLetter%
 	start /wait /i "Mount ISO" %vcdmountLocation% /l=%driveLetter% %isoLocation%
+	)
+	
 	ping 1.0.0.0 -n 1 -w %wait% >NUL
 	
 	REM If the file name of the iso contained a manually set frame rate
@@ -202,7 +210,15 @@ REM 	be excecuted.
 	echo.	
 	echo.
 	echo. Unmounting ISO: %isoLocation% from drive: %driveLetter%
-	%vcdmountLocation% /u /l=%driveLetter%
+	
+	if [%driveNum%]==[] (
+		%vcdmountLocation% /u /l=%driveLetter%
+	)
+	
+	if not [%driveNum%]==[] (
+		%vcdmountLocation% /u /d=%driveNum%
+	)
+	
 	echo.
 	echo.
 	exit /B 0
@@ -210,13 +226,30 @@ REM 	be excecuted.
 :KeepRefresh
 	echo.
 	echo.
-	echo. Mounting ISO: %isoLocation%
 	echo.
 	echo.
-	start /wait /i "Mount ISO" %vcdmountLocation% /l=%driveLetter% %isoLocation% 
+	if [%driveNum%]==[] (
+		echo. Mounting ISO: %isoLocation% to drive: %driveLetter%
+		
+		start /wait /i "Mount ISO" %vcdmountLocation% /l=%driveLetter% %isoLocation% 
+	)
+	
+	if not [%driveNum%]==[] (
+		echo. Mounting ISO: %isoLocation% to drive: %driveNum%
+	
+		start /wait /i "Mount ISO" %vcdmountLocation% /d=%driveNum% %isoLocation% 
+	)
 	ping 1.0.0.0 -n 1 -w %wait% >NUL
 	%tmtLocation% %driveLetter%
-	%vcdmountLocation% /u /l=%driveLetter%
+	
+	if [%driveNum%]==[] (
+		%vcdmountLocation% /u /l=%driveLetter%
+	)
+	
+	if not [%driveNum%]==[] (
+		%vcdmountLocation% /u /d=%driveNum%
+	)	
+	
 	echo.
 	echo.
 	echo. Unmounting ISO: %isoLocation% from drive: %driveLetter%
