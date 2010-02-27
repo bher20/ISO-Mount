@@ -1,0 +1,30 @@
+1.	Place the included files anywhere you would like.
+2.	To start will create/edit the ini configure file that will be used by the program.
+⁃	This file can be name whatever you like, mine is called ISOMount.ini
+⁃	The separate INI Configure File Readme, explaness everything that needs to be in the configure file.
+3.	Next we need to edit your playercorefactory.xml
+⁃	First we need to add a player, here is an example
+	<player name="TMTPlayer Mount ISO" type="ExternalPlayer" audio="false" video="true">
+		<filename>C:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\ISO Mount ini.exe</filename>
+			<args>-iso "{1}" -useIni "C:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\ISOMount.txt"</args>
+		<forceontop>false</forceontop>
+		<hidexbmc>false</hidexbmc>
+		<hidecursor>false</hidecursor>
+    </player>
+⁃	You need to add the full path to my program where you have placed it, between the <filename>path_goes_here</filename>
+⁃	You need to add the following args if you want to use the ini configuration file, between the <args> </args>
+⁃	-iso "{1}"
+⁃	This gets the iso's path
+⁃	-useIni "full path to your configuration file"
+⁃	This tells my program that you want to use a configuration file and where it is.
+⁃	If you want to have my program execute when every you select an iso in XBMC then place the following right above the <rules name="system rules"> in the playercorefactory.xml
+		<rules action="prepend">
+			<rule filetypes="iso" filename="*.bluray.*iso" player="TMTPlayer Mount ISO"/>
+		</rules>
+⁃	So basically all you need to change with this rule is the player="TMTPlayer Mount ISO" to match the name you gave the player previously
+⁃	And change the filename="*.bluray.*iso" to match your naming convention. I suggest reading the XBMC wiki on External Players if you need help with this.
+4.	    If you want to use the fully automatic refresh rate adjustment feature do the following
+⁃	You need to place for example .24fps. in your file name for the iso.
+⁃	So an example would be:
+⁃	d:\Batman Begins.bluray.24fps.iso
+⁃	This will allow my program to parse the file name and pullout the frame rate you have given of the iso. So in this case this will change the refresh rate of your monitor to 24hz or 24p.
